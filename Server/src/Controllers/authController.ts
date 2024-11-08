@@ -3,7 +3,7 @@ import User from "../Models/userModel";
 import bcrypt from "bcryptjs";
 import { generateToken, setTokenCookie } from "../Utils/token";
 
-export const login = async (req: Request, res: Response):Promise<any> => {
+export const login = async (req: Request, res: Response):Promise<void> => {
   try {
     const { username, password } = req.body;
     const existedUser = await User.findOne({ username });
@@ -12,9 +12,10 @@ export const login = async (req: Request, res: Response):Promise<any> => {
       existedUser?.password ?? ""
     );
     if (!existedUser || !checkPassword) {
-      return res.status(400).json({
+       res.status(400).json({
         error: "Invalid credentials",
       });
+      return;
     }
 
     let token = generateToken(existedUser._id as string);

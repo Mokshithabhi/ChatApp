@@ -14,12 +14,12 @@ const useListenMessages = () => {
 
   useEffect(() => {
     socket?.on("newMessage", (newMessage) => {
-      if (newMessage.conversationId === selectedConversation?._id) {
+  
         newMessage.shouldShake = true;
         const sound = new Audio(notificationSound);
         sound.play();
         setMessages([...messages, newMessage]);
-      }
+     
     });
 
     return () => {
