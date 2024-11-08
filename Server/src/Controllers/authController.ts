@@ -3,7 +3,7 @@ import User from "../Models/userModel";
 import bcrypt from "bcryptjs";
 import { generateToken, setTokenCookie } from "../Utils/token";
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response):Promise<any> => {
   try {
     const { username, password } = req.body;
     const existedUser = await User.findOne({ username });
@@ -35,7 +35,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response):Promise<any> => {
   try {
     const { fullName, username, password, confirmPassword, gender } = req.body;
 

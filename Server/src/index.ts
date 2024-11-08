@@ -1,11 +1,10 @@
 const express = require("express");
-import authRouter from './Routes/auth'
-import messagesRouter from './Routes/messages'
-import userRouter from './Routes/user'
+
 import ConnectMongoDB from "./Db/connection";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { app,server } from "./Socket/socket";
+import v1 from './Routes/v1';
 
 const cors = require("cors");
 
@@ -16,9 +15,8 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api/auth',authRouter)
-app.use('/api/messages',messagesRouter)
-app.use("/api/users", userRouter);
+app.use('/',v1)
+
 
 // const server = createServer(app)
 // const io = new Server(server,{cors:{
