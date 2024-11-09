@@ -1,26 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { ErrorResponse, User } from "../context/auth-context";
+import { useConversation } from "../context/conversation-context";
 
 type UserList = User[];
-interface ConversationParam {
-  id?:string,
-  enableDelete:boolean
-}
 
-const useGetConversations = ({id,enableDelete}:ConversationParam) => {
+const useDelete = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [userContact, setUserContact] = useState<UserList>([]);
+  const {deleteUser } = useConversation();
 
-  useEffect(() => {
-    const getConversations = async () => {
+    const getRemainingConversations = async (deleteUser:string) => {
       setLoading(true);
       try {
-        var res
-        if(!enableDelete){
-          res = await fetch("/api/users")        
-        }
-       else{res = await fetch(`/api/users/delete/${id}`); }
+        console.log(deleteUser)
+        const res = await fetch(`/api/users/delete/${deleteUser}`,{
+            method:"DELETE"
+        });
         const data: UserList = await res.json();
         if (!res.ok) {
           const data: ErrorResponse = await res.json(); 
@@ -34,9 +30,7 @@ const useGetConversations = ({id,enableDelete}:ConversationParam) => {
       }
     };
 
-    getConversations();
-  }, []);
 
-  return { loading, userContact };
+  return { loading, userContact,getRemainingConversations};
 };
-export default useGetConversations;
+export default useDelete;

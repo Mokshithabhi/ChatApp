@@ -5,6 +5,8 @@ interface ConversationContextType {
   setSelectedConversation: (selectedConversation: any) => void;
   messages: any[];
   setMessages: (messages: any[]) => void;
+  deleteUser:string;
+  setDeleteUser:(deleteUser:string)=>void
   currentConversationId: string | null;
   setCurrentConversationId: (id: string | null) => void;
 }
@@ -23,6 +25,7 @@ export const ConversationProvider = ({ children }: { children: ReactNode }) => {
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const [deleteUser,setDeleteUser] = useState<string>('')
 
   useEffect(() => {
     if (selectedConversation) {
@@ -37,6 +40,8 @@ export const ConversationProvider = ({ children }: { children: ReactNode }) => {
     setMessages,
     currentConversationId,
     setCurrentConversationId,
+    deleteUser,
+    setDeleteUser
   };
 
   return (
