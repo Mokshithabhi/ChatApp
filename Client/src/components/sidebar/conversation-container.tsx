@@ -1,17 +1,26 @@
+import { useState } from "react";
 import useGetConversations from "../../services/get-users.service";
-import Conversation from "./particular-conversion";
+import ConversationRow from "./particular-conversion";
 
+export interface DeleteProp {
+	id?:string;
+	enableDelete:boolean
+}
 const ConversationContainer = () => {
-	const { loading, conversations } = useGetConversations();
+	const [forDelete,setForDelete] = useState<DeleteProp>({id:"",enableDelete:false})
+	const { loading, userContact } = useGetConversations({id:forDelete?.id,enableDelete:forDelete?.enableDelete});
+	console.log("for delete",forDelete)
 	return (
 		<div className='py-2 flex flex-col overflow-auto'>
-			{conversations.map((conversation, idx) => (
-				<Conversation
+			{userContact.map((conversation, idx) => (
+				<ConversationRow
 					key={conversation._id}
-					conversation={conversation}
-					lastIdx={idx === conversations.length - 1}
+					userContact={conversation}
+					lastIdx={idx === userContact.length - 1}
+					setDelete = {setForDelete}
 				/>
 			))}
+			
 
 			{loading ? <span className='loading loading-spinner mx-auto'></span> : null}
 		</div>

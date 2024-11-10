@@ -9,7 +9,6 @@ const useListenMessages = () => {
     messages,
     setMessages,
     selectedConversation,
-    setSelectedConversation,
   } = useConversation();
 
   useEffect(() => {

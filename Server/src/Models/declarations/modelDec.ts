@@ -7,8 +7,10 @@ export interface IUser extends Document {
 	password: string;
 	gender: "male" | "female";
 	profilePic?: string;
+	deletedUsers?:string[];
 	createdAt?: Date;
 	updatedAt?: Date;
+
 }
 
 export interface IMessage extends Document {
@@ -20,6 +22,7 @@ export interface IMessage extends Document {
 }
 
 export interface IConversation extends Document {
+	_id: mongoose.Types.ObjectId;
 	participants: mongoose.Types.ObjectId[];
 	messages: mongoose.Types.ObjectId[];
 	createdAt?: Date;
