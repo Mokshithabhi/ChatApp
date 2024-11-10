@@ -34,3 +34,30 @@ export const deleteUserService = async (loggedIn: any, deletedId: string) => {
     };
   }
 };
+
+export const allUserService = async (
+  loggedInUserId: mongoose.Types.ObjectId | undefined
+) => {
+  try {
+    const loggedInUser = await User.findById(loggedInUserId).select(
+      "deletedUsers"
+    );
+
+    const filteredUsers = await User.find({
+      _id: {
+        $ne: new mongoose.Types.ObjectId(loggedInUserId?._id),
+        $nin: (loggedInUser?.deletedUsers || []).map(
+          (e: string) => new mongoose.Types.ObjectId(e)
+        ),
+      },
+    }).select("-password");
+
+    return filteredUsers;
+    
+  } catch (error) {
+    return {
+      error: "Internal Server Error",
+      message: (error as Error).message,
+    };
+  }
+};
