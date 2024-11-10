@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 import Conversation from "../Models/conversationModel";
 import User from "../Models/userModel";
 
-export const deleteUserService = async (loggedIn: any, deletedId: string) => {
+export const deleteUserService = async (
+  loggedIn: mongoose.Types.ObjectId | undefined,
+  deletedId: string
+) => {
   try {
     const updateUser = await User.findByIdAndUpdate(
       loggedIn,
@@ -53,7 +56,6 @@ export const allUserService = async (
     }).select("-password");
 
     return filteredUsers;
-    
   } catch (error) {
     return {
       error: "Internal Server Error",
