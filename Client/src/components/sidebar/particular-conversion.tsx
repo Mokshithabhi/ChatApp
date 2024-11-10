@@ -16,9 +16,9 @@ const ConversationRow = ({ userContact, lastIdx,setDelete }: ConversationProps) 
   const isSelected = selectedConversation?._id === userContact?._id;
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(userContact._id);
-  // const handleDelete=(id:string,enableDelete:boolean)=>{
-  //   setDelete({id,enableDelete})
-  // }
+  const handleDelete=(id:string,enableDelete:boolean)=>{
+    setDelete({id,enableDelete})
+  }
 
   return (
     <>
@@ -41,11 +41,11 @@ const ConversationRow = ({ userContact, lastIdx,setDelete }: ConversationProps) 
             </div>
           </div>
         </div>
-        {/* <div onClick={()=>handleDelete(userContact?._id,true)}> */}
+        <div onClick={()=>handleDelete(userContact?._id,true)}>
         <IoTrashBinSharp
           className="z-0 hover:z-10 cursor-pointer"       
         />
-        {/* </div> */}
+        </div>
       </div>
 
       {!lastIdx && <div className="divider my-0 py-0 h-1" />}

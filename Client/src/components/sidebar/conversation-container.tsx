@@ -8,7 +8,8 @@ export interface DeleteProp {
 }
 const ConversationContainer = () => {
 	const [forDelete,setForDelete] = useState<DeleteProp>({id:"",enableDelete:false})
-	const { loading, userContact } = useGetConversations(forDelete);
+	const { loading, userContact } = useGetConversations({id:forDelete?.id,enableDelete:forDelete?.enableDelete});
+	console.log("for delete",forDelete)
 	return (
 		<div className='py-2 flex flex-col overflow-auto'>
 			{userContact.map((conversation, idx) => (

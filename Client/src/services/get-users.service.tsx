@@ -16,12 +16,18 @@ const useGetConversations = ({id,enableDelete}:ConversationParam) => {
     const getConversations = async () => {
       setLoading(true);
       try {
-        var res
-        if(!enableDelete){
-          res = await fetch("/api/users")        
+        let res;
+        if (!enableDelete) {
+          res = await fetch("/api/users");
+        } else if (enableDelete && id) {
+          res = await fetch(`/api/users/delete/${id}`,{
+            method:"DELETE"
+          });
+        } else {
+          throw new Error("ID is required for deletion.");
         }
-       else{res = await fetch(`/api/users/delete/${id}`); }
-        const data: UserList = await res.json();
+       const data: UserList = await res.json();
+       console.log("res",data)
         if (!res.ok) {
           const data: ErrorResponse = await res.json(); 
           throw new Error(data.message);
@@ -35,7 +41,7 @@ const useGetConversations = ({id,enableDelete}:ConversationParam) => {
     };
 
     getConversations();
-  }, []);
+  }, [enableDelete,id]);
 
   return { loading, userContact };
 };

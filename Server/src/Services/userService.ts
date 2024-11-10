@@ -1,13 +1,32 @@
+import mongoose from "mongoose";
+import Conversation from "../Models/conversationModel";
 import User from "../Models/userModel";
 
 export const deleteUserService = async (loggedIn: any, deletedId: string) => {
-  console.log("delete user=>", loggedIn, deletedId);
   try {
-    const filteredUsers = await User.find({
-      _id: { $nin: [loggedIn, deletedId] },
+    const updateUser = await User.findByIdAndUpdate(
+      loggedIn,
+      {
+        $addToSet: { deletedUsers: deletedId },
+      },
+      { new: true }
+    );
+    const remainingUsers = await User.find({
+      _id: {
+        $ne: new mongoose.Types.ObjectId(`${loggedIn}`),
+        $nin: (updateUser?.deletedUsers || []).map(
+          (e: string) => new mongoose.Types.ObjectId(e)
+        ),
+      },
     }).select("-password");
-    
-    return filteredUsers;
+    const conversation = await Conversation.findOne({
+      participants: { $all: [loggedIn, deletedId] },
+    });
+
+    if (conversation) {
+      await Conversation.deleteOne({ _id: conversation?._id });
+    }
+    return remainingUsers;
   } catch (error) {
     return {
       error: "Internal Server Error",
